@@ -1,0 +1,3 @@
+[submodule "Flask-Web-App"]
+    path = Flask-Web-App
+    url = https://github.com/Antony313/Flask-Web-App.git
