@@ -1,0 +1,6 @@
+version: '3'
+services:
+  flask-app:
+    image: my-image-name
+    ports:
+      - "8083:5000" # HostPort:ContainerPort
