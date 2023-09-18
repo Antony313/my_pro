@@ -1,6 +1,19 @@
 version: '3'
 services:
   flask-app:
-    image: my-image-name
+    build: .
     ports:
-      - "8083:5000" # HostPort:ContainerPort
+      - '8083:8083'  # Map external 8083 to internal 8083
+    depends_on:
+      - mongo
+    networks:
+      - mynetwork
+  mongo:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
