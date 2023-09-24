@@ -1,18 +1,13 @@
-from . import db
+from mongoengine import Document, StringField, DateTimeField, ReferenceField
 from flask_login import UserMixin
-from sqlalchemy.sql import func
+from datetime import datetime
 
+class Note(Document):
+    data = StringField(max_length=10000)
+    date = DateTimeField(default=datetime.utcnow)
+    user = ReferenceField('User')
 
-class Note(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    data = db.Column(db.String(10000))
-    date = db.Column(db.DateTime(timezone=True), default=func.now())
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(150), unique=True)
-    password = db.Column(db.String(150))
-    first_name = db.Column(db.String(150))
-    notes = db.relationship('Note')
+class User(Document, UserMixin):
+    email = StringField(max_length=150, unique=True)
+    password = StringField(max_length=150)
+    first_name = StringField(max_length=150)
