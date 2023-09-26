@@ -19,7 +19,11 @@ jobs:
       if: env.CLEAR_ACTIONS_CACHE == 'true'
 
     - name: Set up kubectl
-      uses: docker://lachlanevenson/k8s-kubectl:v1.21.2
+      run: |
+        docker run -e KUBE_CONFIG_DATA=${{ secrets.KUBE_CONFIG_DATA }} antonypol/custom-kubectl-image:latest kubectl version
+      env:
+        DOCKER_REGISTRY: antonypol
+      if: github.event_name == 'push'
 
     - name: Deploy to Kubernetes
       env:
