@@ -1,0 +1,10 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: my-app-monitor
+spec:
+  selector:
+    matchLabels:
+      app: my_pro-flask-app
+  endpoints:
+  - port: http
