@@ -6,28 +6,29 @@ on:
       - main
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Docker Container
+        run: docker run -e KUBE_CONFIG_DATA=${{ secrets.KUBE_CONFIG_DATA }} antonypol/custom-kubectl-image:latest kubectl version
+
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: Clear Actions Cache
-      run: |
-        echo "::set-env name=CLEAR_ACTIONS_CACHE::true"
-      if: env.CLEAR_ACTIONS_CACHE == 'true'
+      - name: Clear Actions Cache
+        run: |
+          echo "::set-env name=CLEAR_ACTIONS_CACHE::true"
+        if: env.CLEAR_ACTIONS_CACHE == 'true'
 
-    - name: Set up kubectl
-      run: |
-        docker run -e KUBE_CONFIG_DATA=${{ secrets.KUBE_CONFIG_DATA }} antonypol/custom-kubectl-image:latest kubectl version
-      env:
-        DOCKER_REGISTRY: antonypol
-      if: github.event_name == 'push'
+      - name: Set up kubectl
+        uses: docker://lachlanevenson/k8s-kubectl:v1.21.2
 
-    - name: Deploy to Kubernetes
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-      run: |
-        echo "$KUBE_CONFIG_DATA" | base64 -d > kubeconfig.yaml
-        kubectl --kubeconfig=kubeconfig.yaml apply -f k8s/
+      - name: Deploy to Kubernetes
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+        run: |
+          echo "$KUBE_CONFIG_DATA" | base64 -d > kubeconfig.yaml
+          kubectl --kubeconfig=kubeconfig.yaml apply -f k8s/
