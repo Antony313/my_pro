@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-pro-flask-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: my_pro-flask-app
+  template:
+    metadata:
+      labels:
+        app: my_pro-flask-app
+    spec:
+      containers:
+        - name: my-pro-flask-app
+          image: gcr.io/my-pro-400108/my_pro-flask-app:latest
+          ports:
+            - containerPort: 8083
+          env:
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: username
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: password
+            - name: MONGO_HOST
+              value: 34.170.187.142
+            - name: MONGO_CLUSTER_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: cluster
