@@ -1,4 +1,4 @@
-# Use Alpine Linux 3.18 as a parent image
+## Use Alpine Linux 3.18 as a parent image
 FROM alpine:3.18
 
 # Install curl and SSL certificates
@@ -14,5 +14,5 @@ RUN curl -LO "https://github.com/instrumenta/kubeval/releases/latest/download/ku
 RUN chmod +x kubeval-linux-amd64
 RUN mv kubeval-linux-amd64 /usr/local/bin/kubeval
 
-# Set the entry point
-ENTRYPOINT ["/usr/local/bin/kubectl"]
+# Set the entry point to an interactive shell
+ENTRYPOINT ["/bin/sh"]
