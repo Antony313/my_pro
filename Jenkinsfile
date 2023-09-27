@@ -13,8 +13,7 @@ pipeline {
 
                 // Authenticate with Google Container Registry (GCR)
                 withCredentials([
-                    [
-                        $class: 'UsernamePasswordMultiBinding',
+                    [$class: 'UsernamePasswordMultiBinding',
                         credentialsId: 'gcr-credentials',
                         usernameVariable: 'USERNAME',
                         passwordVariable: 'PASSWORD'
@@ -30,7 +29,7 @@ pipeline {
         stage('Deploy to GKE') {
             steps {
                 // Authenticate with Google Kubernetes Engine (GKE)
-                withCredentials([usernamePassword(credentialsId: 'gke-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']) {
+                withCredentials([usernamePassword(credentialsId: 'gke-credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     // Set the kubectl context to your GKE cluster
                     sh "kubectl config use-context my-cluster"
                     
