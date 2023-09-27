@@ -33,7 +33,7 @@ pipeline {
                     sh "kubectl config use-context my-cluster"
                     
                     // Apply your Kubernetes deployment configuration (YAML)
-                    sh "kubectl apply -f https://github.com/Antony313/my_pro/blob/main/deployment.yaml"
+                    sh "kubectl apply -f https://raw.githubusercontent.com/Antony313/my_pro/main/deployment.yaml"
                 }
             }
         }
